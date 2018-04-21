@@ -37,7 +37,7 @@ app.post('/api/v1/books', (req, res) => {
   client.query(
     `INSERT INTO
       books(title, author, image_url, isbn, description)
-      VALUES('${req.body.title}, ${req.body.author}, ${req.body.image_url}, ${req.body.isbn}, ${req.body.description}');
+      VALUES('${req.body.title}', '${req.body.author}', '${req.body.image_url}', '${req.body.isbn}', '${req.body.description}');
     `)
     .then(() => res.sendStatus(200))
     .catch(err => res.sendStatus(500));
