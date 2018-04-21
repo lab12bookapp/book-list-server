@@ -33,44 +33,27 @@ app.get('/api/v1/books/:id', (req, res) => {
     .catch(console.error);
 });
 
+app.post('/api/v1/books', (req, res) => {
+  client.query(
+    `INSERT INTO
+      books(title, author, image_url, isbn, description)
+      VALUES('${req.body.title}, ${req.body.author}, ${req.body.image_url}, ${req.body.isbn}, ${req.body.description}');
+    `)
+    .then(() => res.sendStatus(200))
+    .catch(err => res.sendStatus(500));
+});
+app.put('/api/v1/books/:id', (req, res) => {
+  client.query(`
+    UPDATE books 
+    SET title = '${req.body.title}', 
+        author = '${req.body.author}', 
+        image_url = '${req.body.image_url}', 
+        isbn = '${req.body.isbn}', 
+        description = '${req.body.description}');
+    `)
+    .then(() => res.sendStatus(200))
+    .catch(err => res.sendStatus(500));
+});
+
 app.get('*', (req, res) => res.redirect(CLIENT_URL));
-
-// app.post('/books', (request, response) => {
-//   client.query(
-//     `INSERT INTO
-//     books(title, author, image_url, isbn, description)
-//     VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING;
-//     `,
-//     [
-//       request.body.title,
-//       request.body.author,
-//       request.body.image_url,
-//       request.body.isbn,
-//       request.body.description
-//     ]
-//   )
-//     .then(function() {
-//       response.send('insert complete')
-//     })
-//     .catch(function(err) {
-//       console.error(err);
-//     });
-
-
-
-// function queryTwo() {
-//   client.query(
-//     `SELECT book_id FROM books WHERE title=$1;`,
-//     [request.body.title],
-//     function(err, result) {
-//       if (err) console.error(err);
-//       // REVIEW: This is our third query, to be executed when the second is complete. We are also passing the author_id into our third query.
-//       queryThree(result.rows[0].book_id);
-//     }
-//   )
-// }
-// }
-
-
-
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
